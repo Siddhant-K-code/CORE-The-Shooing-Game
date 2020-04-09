@@ -1,0 +1,2581 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORE | The Game</title>
+
+<div id="canvas-container">
+
+	<div id="game-title" class="">CORE</div>
+
+	<div id="game-info" class="">
+		<p>Protect the <b>CORE</b> from the invaders. They must not <b>destroy</b> it, if they do then a huge
+			<b>blast</b> would destroy <b>everything</b>. Use all the <b>resources</b> you get to <b>protect &
+				save</b> it.</p>
+		<p>Be <b>aware</b> invaders become more strong as you <b>progress</b> through the mission.</p>
+	</div>
+
+	<button class="start">Start</button>
+
+	<button class="restart hide">Restart</button>
+
+	<button class="pause hide"></button>
+
+	<span id="core-life" class="hide"></span>
+
+	<div class="paused-container hide">
+		<p class="paused-text">paused</p>
+		<button class="resume">resume</button>
+	</div>
+
+	<div class="score hide"></div>
+
+	<div class="coins-container hide">
+		<div class="icon coin">
+			<svg>
+				<use xlink:href="#coin-icon"></use>
+			</svg>
+		</div>
+		<div id="total-coins"></div>
+	</div>
+
+	<div class="magazine hide">
+		<div class="icon-container">
+			<div class="icon bullets">
+				<svg class="bullet _1">
+					<use xlink:href="#bullet-icon"></use>
+				</svg>
+				<svg class="bullet _2">
+					<use xlink:href="#bullet-icon"></use>
+				</svg>
+				<svg class="bullet _3">
+					<use xlink:href="#bullet-icon"></use>
+				</svg>
+			</div>
+		</div>
+		<div class="magazine--text">
+			<span id="bullets">0</span>/<span id="magazine-size">0</span>
+		</div>
+		<span class="hide" id="key-info">press 'r' key</span>
+		<button class="hide">reload</button>
+	</div>
+
+	<div class="powerup-container hide">
+		<div class="powerup" id="machinegun-powerup">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#machine-gun-icon"></use>
+				</svg>
+			</div>
+			<span class="powerup-name">Machine Gun</span>
+		</div>
+		<div class="powerup" id="doublecanon-powerup">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#double-canon-icon"></use>
+				</svg>
+			</div>
+			<span class="powerup-name">Double Canon</span>
+		</div>
+		<div class="powerup" id="shield-powerup">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#shield-icon"></use>
+				</svg>
+			</div>
+			<span class="powerup-name">Shield</span>
+		</div>
+		<div class="powerup" id="double-coins-powerup">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#double-coins-icon"></use>
+				</svg>
+			</div>
+			<span class="powerup-name">2x Coins</span>
+		</div>
+	</div>
+
+	<div class="powerup-progress-bar hide">
+		<div class="bar"></div>
+	</div>
+	<div class="powerup-info hide">
+		<span class="powerup-duration-container hide">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#timer-icon"></use>
+				</svg>
+			</div>
+			<div id="powerup-duration-value"></div>
+		</span>
+		<span id="powerup-value"></span>/<span id="powerup-max-value"></span>
+	</div>
+
+	<div class="shop-with-coins hide">
+		<div class="info-text">BUY</div>
+		<div class="shop-item disabled" id="health-kit">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#health-kit-icon"></use>
+				</svg>
+			</div>
+			<div class="item-cost"></div>
+			<div class="item-info">core health kit</div>
+		</div>
+		<div class="shop-item disabled" id="increase-magazine">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#increase-magazine-icon"></use>
+				</svg>
+			</div>
+			<div class="item-cost"></div>
+			<div class="item-info">increase magazine capacity</div>
+		</div>
+		<div class="shop-item disabled" id="faster-reload">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#faster-reload-icon"></use>
+				</svg>
+			</div>
+			<div class="item-cost"></div>
+			<div class="item-info">decrease reload time</div>
+		</div>
+		<div class="shop-item disabled" id="increase-powerup-duration">
+			<div class="icon">
+				<svg>
+					<use xlink:href="#timer-icon"></use>
+				</svg>
+			</div>
+			<div class="item-cost"></div>
+			<div class="item-info">increase powerup duration</div>
+		</div>
+	</div>
+
+	<span id="new-highscore-info" class="hide">New Highscore!!</span>
+	<div id="highscore" class="hide"></div>
+
+	<div class="stats-container hide">
+		<div class="stat total-score">
+			Total score : <span id="total-score-stat">0</span>
+		</div>
+		<div class="stat time-survided">
+			Time Survided : <span id="time-survived-stat">0</span>
+		</div>
+		<div class="stat attackers-killed">
+			Attackers Killed : <span id="attackers-killed-stat">0</span>
+		</div>
+	</div>
+
+	<div class="overlay"></div>
+</div>
+
+<!-- -------------- -->
+<!-- HTML ends here -->
+<!-- -------------- -->
+
+<!-- |||||||||||||||||||||||||||||||||||| -->
+<!-- ------------------------------------ -->
+<!-- |||||||||||||||||||||||||||||||||||| -->
+
+<!-- ------------- -->
+<!-- All SVG Icons -->
+<!-- ------------  -->
+
+<svg class="icons" style="display: none;">
+
+	<symbol id="bullet-icon" viewBox="0 0 39.5 128" xmlns="http://www.w3.org/2000/svg">
+		<g transform="translate(-44.25,0.001)">
+			<path d="m 68.875,58.141 h -9.75 a 1.75,1.75 0 0 0 -1.75,1.75 v 38.236 a 1.75,1.75 0 0 0 1.75,1.75 h 9.75 a 1.75,1.75 0 0 0 1.75,-1.75 V 59.891 a 1.75,1.75 0 0 0 -1.75,-1.75 z m -1.75,38.236 h -6.25 V 61.641 h 6.25 z" id="path3860" />
+			<path d="M 77.033,114.563 H 75.44 l 3.064,-7.8 c 0.009,-0.023 0.01,-0.046 0.018,-0.069 a 1.775,1.775 0 0 0 0.075,-0.291 1.442,1.442 0 0 0 0.014,-0.146 c 0,-0.045 0.014,-0.088 0.014,-0.134 V 51.891 c 0,-0.045 -0.01,-0.088 -0.013,-0.133 A 1.643,1.643 0 0 0 78.594,51.586 1.686,1.686 0 0 0 78.546,51.397 C 78.53,51.343 78.525,51.288 78.504,51.235 l -3.931,-10 L 72.819,29.6 A 122.526,122.526 0 0 0 69.246,13.419 L 65.68,1.254 a 1.751,1.751 0 0 0 -3.36,0 L 58.754,13.416 A 122.671,122.671 0 0 0 55.181,29.6 l -1.754,11.633 -3.931,10 c -0.021,0.053 -0.026,0.109 -0.042,0.163 a 1.669,1.669 0 0 0 -0.048,0.188 1.643,1.643 0 0 0 -0.018,0.172 c 0,0.045 -0.013,0.088 -0.013,0.133 v 54.236 c 0,0.046 0.01,0.089 0.013,0.134 0.003,0.045 0.007,0.1 0.015,0.146 a 1.669,1.669 0 0 0 0.075,0.29 c 0.008,0.023 0.009,0.047 0.018,0.07 l 3.064,7.8 h -1.593 a 6.717,6.717 0 1 0 0,13.434 h 26.066 a 6.717,6.717 0 1 0 0,-13.434 z M 56.32,43.44 h 15.36 l 2.627,6.686 H 53.693 Z m -3.445,10.2 h 22.25 v 50.736 H 52.875 Z M 58.642,30.117 A 118.986,118.986 0 0 1 62.113,14.4 L 64,7.966 65.887,14.4 a 119.211,119.211 0 0 1 3.471,15.718 l 1.481,9.822 H 57.161 Z m -4.949,77.759 h 20.614 l -2.627,6.686 H 56.32 Z m 23.34,16.62 H 50.967 a 3.217,3.217 0 1 1 0,-6.434 h 26.066 a 3.217,3.217 0 1 1 0,6.434 z" id="path3862" />
+		</g>
+	</symbol>
+
+	<symbol id="timer-icon" viewBox="0 -20 96 150" xmlns="http://www.w3.org/2000/svg">
+		<g>
+			<path d="m77.08 28.577 5.748-5.748-5.656-5.658-6.149 6.149a39.747 39.747 0 0 0 -19.023-7.12v-8.2h8v-8h-24v8h8v8.2a39.747 39.747 0 0 0 -19.023 7.12l-6.149-6.149-5.656 5.658 5.748 5.748a40 40 0 1 0 58.16 0zm-29.08 59.423a32 32 0 1 1 32-32 32.036 32.036 0 0 1 -32 32z" />
+			<path d="m48 32v24h-24a24 24 0 1 0 24-24z" />
+		</g>
+	</symbol>
+
+	<symbol id="mute-icon" viewBox="0 0 448.075 448.075" xmlns="http://www.w3.org/2000/svg">
+		<path d="M352.021,16.075c0-6.08-3.52-11.84-8.96-14.4c-5.76-2.88-12.16-1.92-16.96,1.92l-141.76,112.96l167.68,167.68V16.075z" />
+		<path d="M443.349,420.747l-416-416c-6.24-6.24-16.384-6.24-22.624,0s-6.24,16.384,0,22.624l100.672,100.704h-9.376
+					c-9.92,0-18.56,4.48-24.32,11.52c-4.8,5.44-7.68,12.8-7.68,20.48v128c0,17.6,14.4,32,32,32h74.24l155.84,124.48
+					c2.88,2.24,6.4,3.52,9.92,3.52c2.24,0,4.8-0.64,7.04-1.6c5.44-2.56,8.96-8.32,8.96-14.4v-57.376l68.672,68.672
+					c3.136,3.136,7.232,4.704,11.328,4.704s8.192-1.568,11.328-4.672C449.589,437.131,449.589,427.019,443.349,420.747z" />
+	</symbol>
+
+	<symbol id="speaker-icon" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+		<path d="M278.944,17.577c-5.568-2.656-12.128-1.952-16.928,1.92L106.368,144.009H32c-17.632,0-32,14.368-32,32v128
+					c0,17.664,14.368,32,32,32h74.368l155.616,124.512c2.912,2.304,6.464,3.488,10.016,3.488c2.368,0,4.736-0.544,6.944-1.6
+					c5.536-2.656,9.056-8.256,9.056-14.4v-416C288,25.865,284.48,20.265,278.944,17.577z" />
+		<path d="M368.992,126.857c-6.304-6.208-16.416-6.112-22.624,0.128c-6.208,6.304-6.144,16.416,0.128,22.656
+					C370.688,173.513,384,205.609,384,240.009s-13.312,66.496-37.504,90.368c-6.272,6.176-6.336,16.32-0.128,22.624
+					c3.136,3.168,7.264,4.736,11.36,4.736c4.064,0,8.128-1.536,11.264-4.64C399.328,323.241,416,283.049,416,240.009
+					S399.328,156.777,368.992,126.857z" />
+		<path d="M414.144,81.769c-6.304-6.24-16.416-6.176-22.656,0.096c-6.208,6.272-6.144,16.416,0.096,22.624
+					C427.968,140.553,448,188.681,448,240.009s-20.032,99.424-56.416,135.488c-6.24,6.24-6.304,16.384-0.096,22.656
+					c3.168,3.136,7.264,4.704,11.36,4.704c4.064,0,8.16-1.536,11.296-4.64C456.64,356.137,480,299.945,480,240.009
+					S456.64,123.881,414.144,81.769z" />
+	</symbol>
+
+	<symbol id="coin-icon" viewBox="0 0 511.997 511.997" xmlns="http://www.w3.org/2000/svg" style="enable-background:new 0 0 511.997 511.997;">
+		<circle style="fill:#FFC843;" cx="255.998" cy="255.998" r="255.998" />
+		<circle style="fill:#D49000;" cx="255.998" cy="255.998" r="207.745" />
+		<path style="fill:#FFC843;" d="M259.203,102.361c10.266,0,18.408,8.142,18.408,18.408v4.956c19.117,2.832,36.108,8.496,51.33,16.993
+												 c6.726,3.893,12.745,10.62,12.745,21.241c0,13.452-10.621,23.718-24.073,23.718c-4.247,0-8.496-1.062-12.39-3.186
+												 c-9.912-5.31-19.825-9.558-29.383-12.036v53.81c53.809,14.513,76.82,36.462,76.82,76.111s-30.444,65.137-75.05,70.092v18.762
+												 c0,10.266-8.142,18.409-18.408,18.409c-10.266,0-18.408-8.143-18.408-18.409v-19.116c-25.134-3.186-48.854-12.036-69.74-24.781
+												 c-7.434-4.601-12.036-11.681-12.036-21.24c0-13.806,10.621-24.073,24.427-24.073c4.602,0,9.558,1.77,13.807,4.602
+												 c14.868,9.558,29.029,16.285,45.313,19.825v-56.288c-50.978-13.806-76.112-33.276-76.112-75.403
+												 c0-38.941,29.737-65.137,74.342-69.74v-4.248C240.795,110.503,248.937,102.361,259.203,102.361z M242.566,217.059v-47.791
+												 c-16.993,2.479-24.427,10.975-24.427,22.303C218.139,202.545,223.095,209.979,242.566,217.059z M275.842,279.011v49.207
+												 c16.639-2.478,25.134-10.266,25.134-23.011C300.977,293.525,294.959,285.736,275.842,279.011z" />
+	</symbol>
+
+	<symbol id="health-kit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -120 388.8 700">
+		<g>
+			<g>
+				<path fill="#ff0000" d="M221.84,209.939c-4.418,0-8-3.582-8-8v-36.56h-38.88v36.56c0,4.418-3.582,8-8,8H130.4v38.8h36.56c4.418,0,8,3.582,8,8
+												v36.56h38.8v-36.56c0-4.418,3.582-8,8-8h36.64v-38.8H221.84z" />
+			</g>
+		</g>
+		<g>
+			<g>
+				<path d="M333.6,89.459H55.2c-25.44,0-55.2,14.48-55.2,55.2v173.84c0,40.72,29.76,55.2,55.2,55.2h278.4
+							c25.44,0,55.2-14.48,55.2-55.2v-173.84C388.8,103.939,359.12,89.459,333.6,89.459z M274.4,252.819
+							c0,6.583-5.337,11.92-11.92,11.92h-32.64v32.64c0,6.583-5.337,11.92-11.92,11.92h-47.04c-6.583,0-11.92-5.337-11.92-11.92v-32.64
+							H126.4c-6.583,0.044-11.956-5.257-12-11.84c0-0.027,0-0.054,0-0.08v-46.96c0-6.583,5.337-11.92,11.92-11.92h32.64v-32.64
+							c0-6.583,5.337-11.92,11.92-11.92h46.96c6.583,0,11.92,5.337,11.92,11.92v32.64h32.64c6.583-0.044,11.956,5.257,12,11.84
+							c0,0.027,0,0.053,0,0.08V252.819z" />
+			</g>
+		</g>
+		<g>
+			<g>
+				<path d="M245.835,15.139c-0.877-0.05-1.757-0.05-2.635,0h-97.6c-12.837-0.727-23.833,9.089-24.56,21.925
+							c-0.05,0.878-0.05,1.757,0,2.635v36h16l0.08-36c0-2.32,0-8.56,8.56-8.56h97.52c8.56,0,8.56,6.16,8.56,8.56v36h16v-36
+							C268.488,26.862,258.671,15.867,245.835,15.139z" />
+			</g>
+		</g>
+	</symbol>
+
+	<symbol id="increase-magazine-icon" viewBox="0 -100 512 700" xmlns="http://www.w3.org/2000/svg">
+		<g transform="translate(0,-161.53332)" id="layer1">
+			<path id="path3869" d="M 299.00515,632.11707 C 42.485018,483.85659 44.322339,203.90448 46.288446,203.51126 l 136.727734,0.47444 c 0,0 -10.28009,213.97903 186.69965,313.98413 z" style="fill:#fff;stroke:#fff;stroke-width:8;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" />
+			<path id="path3874" d="m 144.28571,264.06904 c 0,0 2.00762,141.06399 158.55874,264.09444" style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" />
+			<path id="path3872" d="m 94.201981,263.5847 c 0,0 5.657364,153.30461 181.322379,305.8797" style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" />
+			<path id="path3870" d="m 255.19613,604.13129 73.65447,-111.326" style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" />
+			<path id="path3867" d="M 49.492217,263.01091 188.81187,261.64362" style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" />
+			<path id="path3893" d="m 285.87317,387.15507 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" style="fill:#fff;stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;;stroke-miterlimit:4;stroke-dasharray:none" />
+			<path style="fill:#fff;stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" d="m 353.87317,387.15507 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" id="path3895" />
+			<path id="path3897" d="m 423.87317,387.15507 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" style="fill:#fff;stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" />
+			<path id="path3857" style="stroke:#fff;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="m -722.42517,241.84568 c 0,0 2.00762,141.06399 158.55874,264.09444 M -772.5089,241.36134 c 0,0 5.65737,153.30461 181.32238,305.8797 m -18.54252,32.16689 70.08305,-106.68314 m -270.42981,-232.29438 127.17679,-1.01015 m 115.19328,370.47345 C -824.22586,461.63323 -822.38854,181.68112 -820.42243,181.2879 l 136.72773,0.47444 c 0,0 -10.28009,213.97903 186.69965,313.98413 z" />
+			<path style="stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" d="m -580.83771,364.93171 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" id="path3859" />
+			<path id="path3861" d="m -512.83771,364.93171 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" style="stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" />
+			<path style="stroke:#fff;stroke-width:12;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" d="m -442.83771,364.93171 h 40.4061 v -91.4188 l -9.01884,-15.6211 v -32.48742 c 0,0 -2.64706,-31.91233 -10.93167,-32.19861 -8.51106,-0.29411 -10.98541,32.45115 -10.98541,32.45115 l -0.37881,31.69354 -8.58143,14.86348 z" id="path3863" />
+		</g>
+	</symbol>
+
+	<symbol id="faster-reload-icon" viewBox="0 -100 384 500" xmlns="http://www.w3.org/2000/svg">
+		<g id="g3928" transform="matrix(1.0353221,0,0,1.0351133,-733.90123,-16.823205)">
+			<path style="fill:#fff;stroke:#000;stroke-width:5.7958827;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="M 915.49449,309.82365 C 723.10441,198.6283 724.4824,-11.335778 725.95698,-11.630698 l 102.54581,0.35583 c 0,0 -7.7101,160.484268 140.0247,235.488098 z" id="path3869" />
+			<path style="fill:#fff;stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="m 799.45489,33.787632 c 0,0 1.5058,105.797988 118.9191,198.070828" id="path3874" />
+			<path style="fill:#fff;stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="m 761.89213,33.424382 c 0,0 4.24303,114.978448 135.99176,229.409768" id="path3872" />
+			<path style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="m 883.40482,287.68377 53.70674,-80.80989" id="path3870" />
+			<path style="stroke:#000;stroke-width:12;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:5;" d="M 730.27739,32.994042 830.5485,32.735604" id="path3867" />
+		</g>
+		<g id="g3935" transform="matrix(0.85601499,0,0,0.85601499,-359.97685,125.62497)" style="fill:#fff;stroke-width:2">
+			<path d="m 694.60171,-74.504266 c 0,43.56269 35.4415,79.0042397 79.0042,79.0042397 43.5627,0 79.0042,-35.4415497 79.0042,-79.0042397 0,-41.142434 -31.6129,-75.033454 -71.822,-78.675054 v -14.69359 h 14.3644 v -14.36441 h -43.0932 v 14.36441 h 14.3644 v 14.69359 c -40.2091,3.6416 -71.822,37.53262 -71.822,78.675054 z m 143.644,0 c 0,35.64169 -28.9981,64.6398397 -64.6398,64.6398397 -35.6417,0 -64.6398,-28.9981497 -64.6398,-64.6398397 0,-35.641684 28.9981,-64.639834 64.6398,-64.639834 35.6417,0 64.6398,28.99815 64.6398,64.639834 z m 0,0" />
+			<path d="m 766.42371,-124.77969 v 57.457634 h 57.4576 v -14.36441 h -43.0932 v -43.093224 z m 0,0" />
+			<path d="m 607.45761,-81.686466 h 58.41525 v 14.36441 h -58.41525 z m 0,0" />
+			<path d="m 621.82201,-124.77969 h 58.41526 v 14.36441 h -58.41526 z m 0,0" />
+			<path d="m 621.82201,-38.593246 h 58.41526 v 14.36441 h -58.41526 z m 0,0" />
+		</g>
+	</symbol>
+
+	<symbol id="machine-gun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 136">
+		<rect style="opacity:1;fill:#000000;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect3848" width="135.46666" height="135.46666" x="-4.4408921e-16" y="9.9365234e-06" />
+		<g id="g3861" transform="matrix(2.9569111,2.3575085,-3.2581131,2.1395646,611.8376,-611.64528)" style="stroke-width:0.26718938">
+			<g id="g3891" transform="matrix(0.33485578,-0.36913561,0.56190422,0.50985655,-90.746974,132.98563)" style="stroke-width:0.43449894">
+				<rect style="opacity:1;fill:#ffffff;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:0.689767;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect3855" width="12.722228" height="29.560186" x="65.42804" y="250.51556" />
+				<rect y="250.51556" x="65.42804" height="7.8579011" width="12.722228" id="rect3857" style="opacity:1;fill:#00ffff;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:0.689767;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+			</g>
+		</g>
+		<rect style="opacity:1;fill:#00ffff;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect3866" width="8.6469965" height="20.95174" x="63.409832" y="50.838566" ry="4.3234982" />
+		<rect ry="4.3234982" y="21.677809" x="63.409832" height="20.95174" width="8.6469965" id="rect3868" style="opacity:1;fill:#00ffff;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+		<rect style="opacity:1;fill:#00ffff;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect3870" width="8.6469965" height="20.95174" x="63.409832" y="-10.304913" ry="4.3234982" />
+	</symbol>
+
+	<symbol id="double-canon-icon" viewBox="0 0 136 136" xmlns="http://www.w3.org/2000/svg">
+		<rect y="9.9365234e-06" x="-4.4408921e-16" height="135.46666" width="135.46666" id="rect3848" style="opacity:1;fill:#000000;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+		<g style="stroke-width:0.89264756" transform="matrix(1.1202629,0,0,1.1202629,-15.040737,-0.11649942)" id="g3888">
+			<circle r="22.779613" cy="61.2197" cx="73.431541" id="path4138" style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+			<g id="g4152" transform="matrix(1.3234609,0,0,1.3234609,-16.210868,-242.20571)" style="stroke-width:0.67447978">
+				<rect y="118.61663" x="205.73975" height="22.45064" width="7.4835467" id="rect4144" style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.53536832;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" transform="rotate(45)" />
+				<rect style="opacity:1;fill:#800080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.53536832;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4146" width="7.4835467" height="3.3675959" x="205.73975" y="137.69968" transform="rotate(45)" />
+			</g>
+			<rect transform="rotate(135)" y="-97.760429" x="-52.298782" height="4.4568815" width="9.9041815" id="rect4158" style="opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" ry="2.2284408" />
+			<g transform="matrix(1.3234609,0,0,1.3234609,-15.510536,-242.90604)" id="g4173" style="stroke-width:0.67447978">
+				<rect style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.53536832;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4142" width="7.4835467" height="22.45064" x="206.53348" y="87.660393" transform="rotate(45)" />
+				<rect transform="rotate(45)" y="87.660393" x="206.53348" height="3.3675959" width="7.4835467" id="rect4148" style="opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.53536832;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+			</g>
+			<rect ry="2.2284408" style="opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4175" width="9.9041815" height="4.4568815" x="-70.012192" y="-98.31572" transform="rotate(135)" />
+			<rect transform="rotate(135)" y="-98.345764" x="-91.342262" height="4.4568815" width="9.9041815" id="rect4177" style="opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" ry="2.2284408" />
+			<rect ry="2.2284408" style="opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4179" width="9.9041815" height="4.4568815" x="-114.62829" y="-98.810928" transform="rotate(135)" />
+			<rect ry="2.2251239" style="opacity:1;fill:#800080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4194" width="9.8894396" height="4.4502478" x="-33.552673" y="92.388084" transform="rotate(-45)" />
+			<rect transform="rotate(-45)" y="91.833641" x="-51.239727" height="4.4502478" width="9.8894396" id="rect4196" style="opacity:1;fill:#800080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" ry="2.2251239" />
+			<rect ry="2.2251239" style="opacity:1;fill:#800080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" id="rect4198" width="9.8894396" height="4.4502478" x="-72.538025" y="91.803627" transform="rotate(-45)" />
+			<rect transform="rotate(-45)" y="91.339157" x="-95.789406" height="4.4502478" width="9.8894396" id="rect4200" style="opacity:1;fill:#800080;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70853901;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" ry="2.2251239" />
+		</g>
+	</symbol>
+
+	<symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 136" id="shield-icon">
+		<rect y="9.9365234e-06" x="-4.4408921e-16" height="135.46666" width="135.46666" id="rect3848" style="opacity:1;fill:#000000;fill-opacity:0.97409327;fill-rule:nonzero;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+		<ellipse ry="49.145538" rx="49.145535" cy="67.733337" cx="67.73333" id="path4022" style="opacity:1;fill:none;fill-opacity:0.98165134;fill-rule:nonzero;stroke:#00ffff;stroke-width:0.79375011;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+		<g style="stroke-width:0.95596564" transform="matrix(1.0460628,0,0,1.0460628,-3.0818925,-172.09396)" id="g4045">
+			<g id="g4018" transform="matrix(1.2334268,0,0,1.2331325,-9.3395991,-65.224379)" style="fill:#00ffff;stroke:none;stroke-width:0.77514094">
+				<g style="stroke-width:0.77514094" id="g4032">
+					<path style="fill:#00ffff;stroke:none;stroke-width:0.20508938px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 62.487613,207.57158 V 270.0592 L 84.1899,250.97615 88.305851,216.55184 Z" id="path4012" />
+					<path id="path4028" d="M 62.487612,207.57158 V 270.0592 L 40.734371,250.97615 36.608756,216.55184 Z" style="fill:#00ffff;stroke:none;stroke-width:0.20508938px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+				</g>
+			</g>
+			<g style="stroke-width:0.95596564" id="g4036">
+				<path id="path4024" d="m 67.726096,194.84955 -27.693822,9.36854 4.120651,38.52616 23.584521,20.45882 23.748913,-21.02009 4.115951,-37.79191 z" style="fill:none;stroke:#000000;stroke-width:1.26466274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+				<path id="path4026" d="m 67.70026,194.8708 -0.132292,68.2625 z" style="fill:none;stroke:#000000;stroke-width:1.26466274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+			</g>
+		</g>
+	</symbol>
+
+	<symbol id="double-coins-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -30 136 190">
+		<g transform="translate(0,-161.5333)">
+			<g style="stroke-width:0.99163175" transform="matrix(1.0084389,0,0,1.0084389,-0.56936132,-2.5197406)" id="g3898">
+				<g id="g3864" transform="matrix(0.11866799,0,0,0.11866799,4.763028,173.17529)" style="stroke-width:2.21095204">
+					<circle id="circle3848" r="255.998" cy="255.998" cx="255.998" style="fill:#ffc843;stroke-width:2.21095204" />
+					<circle id="circle3850" r="207.745" cy="255.998" cx="255.998" style="fill:#d49000;stroke-width:2.21095204" />
+					<path id="path3852" d="m 259.203,102.361 c 10.266,0 18.408,8.142 18.408,18.408 v 4.956 c 19.117,2.832 36.108,8.496 51.33,16.993 6.726,3.893 12.745,10.62 12.745,21.241 0,13.452 -10.621,23.718 -24.073,23.718 -4.247,0 -8.496,-1.062 -12.39,-3.186 -9.912,-5.31 -19.825,-9.558 -29.383,-12.036 v 53.81 c 53.809,14.513 76.82,36.462 76.82,76.111 0,39.649 -30.444,65.137 -75.05,70.092 v 18.762 c 0,10.266 -8.142,18.409 -18.408,18.409 -10.266,0 -18.408,-8.143 -18.408,-18.409 v -19.116 c -25.134,-3.186 -48.854,-12.036 -69.74,-24.781 -7.434,-4.601 -12.036,-11.681 -12.036,-21.24 0,-13.806 10.621,-24.073 24.427,-24.073 4.602,0 9.558,1.77 13.807,4.602 14.868,9.558 29.029,16.285 45.313,19.825 v -56.288 c -50.978,-13.806 -76.112,-33.276 -76.112,-75.403 0,-38.941 29.737,-65.137 74.342,-69.74 v -4.248 c 0,-10.265 8.142,-18.407 18.408,-18.407 z m -16.637,114.698 v -47.791 c -16.993,2.479 -24.427,10.975 -24.427,22.303 0,10.974 4.956,18.408 24.427,25.488 z m 33.276,61.952 v 49.207 c 16.639,-2.478 25.134,-10.266 25.134,-23.011 10e-4,-11.682 -6.017,-19.471 -25.134,-26.196 z" style="fill:#ffc843;stroke-width:2.21095204" />
+				</g>
+				<g style="stroke-width:2.21095204" transform="matrix(0.11866799,0,0,0.11866799,32.805683,173.17529)" id="g3872">
+					<circle style="fill:#ffc843;stroke-width:2.21095204" cx="255.998" cy="255.998" r="255.998" id="circle3866" />
+					<circle style="fill:#d49000;stroke-width:2.21095204" cx="255.998" cy="255.998" r="207.745" id="circle3868" />
+					<path style="fill:#ffc843;stroke-width:2.21095204" d="m 259.203,102.361 c 10.266,0 18.408,8.142 18.408,18.408 v 4.956 c 19.117,2.832 36.108,8.496 51.33,16.993 6.726,3.893 12.745,10.62 12.745,21.241 0,13.452 -10.621,23.718 -24.073,23.718 -4.247,0 -8.496,-1.062 -12.39,-3.186 -9.912,-5.31 -19.825,-9.558 -29.383,-12.036 v 53.81 c 53.809,14.513 76.82,36.462 76.82,76.111 0,39.649 -30.444,65.137 -75.05,70.092 v 18.762 c 0,10.266 -8.142,18.409 -18.408,18.409 -10.266,0 -18.408,-8.143 -18.408,-18.409 v -19.116 c -25.134,-3.186 -48.854,-12.036 -69.74,-24.781 -7.434,-4.601 -12.036,-11.681 -12.036,-21.24 0,-13.806 10.621,-24.073 24.427,-24.073 4.602,0 9.558,1.77 13.807,4.602 14.868,9.558 29.029,16.285 45.313,19.825 v -56.288 c -50.978,-13.806 -76.112,-33.276 -76.112,-75.403 0,-38.941 29.737,-65.137 74.342,-69.74 v -4.248 c 0,-10.265 8.142,-18.407 18.408,-18.407 z m -16.637,114.698 v -47.791 c -16.993,2.479 -24.427,10.975 -24.427,22.303 0,10.974 4.956,18.408 24.427,25.488 z m 33.276,61.952 v 49.207 c 16.639,-2.478 25.134,-10.266 25.134,-23.011 10e-4,-11.682 -6.017,-19.471 -25.134,-26.196 z" id="path3870" />
+				</g>
+				<g id="g3880" transform="matrix(0.11866799,0,0,0.11866799,69.416933,173.17529)" style="stroke-width:2.21095204">
+					<circle id="circle3874" r="255.998" cy="255.998" cx="255.998" style="fill:#ffc843;stroke-width:2.21095204" />
+					<circle id="circle3876" r="207.745" cy="255.998" cx="255.998" style="fill:#d49000;stroke-width:2.21095204" />
+					<path id="path3878" d="m 259.203,102.361 c 10.266,0 18.408,8.142 18.408,18.408 v 4.956 c 19.117,2.832 36.108,8.496 51.33,16.993 6.726,3.893 12.745,10.62 12.745,21.241 0,13.452 -10.621,23.718 -24.073,23.718 -4.247,0 -8.496,-1.062 -12.39,-3.186 -9.912,-5.31 -19.825,-9.558 -29.383,-12.036 v 53.81 c 53.809,14.513 76.82,36.462 76.82,76.111 0,39.649 -30.444,65.137 -75.05,70.092 v 18.762 c 0,10.266 -8.142,18.409 -18.408,18.409 -10.266,0 -18.408,-8.143 -18.408,-18.409 v -19.116 c -25.134,-3.186 -48.854,-12.036 -69.74,-24.781 -7.434,-4.601 -12.036,-11.681 -12.036,-21.24 0,-13.806 10.621,-24.073 24.427,-24.073 4.602,0 9.558,1.77 13.807,4.602 14.868,9.558 29.029,16.285 45.313,19.825 v -56.288 c -50.978,-13.806 -76.112,-33.276 -76.112,-75.403 0,-38.941 29.737,-65.137 74.342,-69.74 v -4.248 c 0,-10.265 8.142,-18.407 18.408,-18.407 z m -16.637,114.698 v -47.791 c -16.993,2.479 -24.427,10.975 -24.427,22.303 0,10.974 4.956,18.408 24.427,25.488 z m 33.276,61.952 v 49.207 c 16.639,-2.478 25.134,-10.266 25.134,-23.011 10e-4,-11.682 -6.017,-19.471 -25.134,-26.196 z" style="fill:#ffc843;stroke-width:2.21095204" />
+				</g>
+			</g>
+			<g id="text3884" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:57.74768448px;line-height:1.25;font-family:'Tahu!';-inkscape-font-specification:'Tahu!, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffc843;fill-opacity:1;stroke:none;stroke-width:0.26458335" aria-label="2X">
+				<path id="path3958" style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:57.74768448px;font-family:'Montserrat SemiBold';-inkscape-font-specification:'Montserrat SemiBold, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffc843;fill-opacity:1;stroke-width:0.26458335" d="m 62.472672,279.00606 v 6.35225 H 32.674867 v -5.02405 l 16.053856,-15.24539 q 2.714141,-2.59865 3.638104,-4.50432 0.981711,-1.96342 0.981711,-3.86909 0,-2.82964 -1.905674,-4.33108 -1.905673,-1.50144 -5.601525,-1.50144 -6.179002,0 -9.47062,4.21558 l -5.25504,-4.04234 q 2.367656,-3.17612 6.352246,-4.90855 4.042338,-1.79018 9.008639,-1.79018 6.583236,0 10.510078,3.11838 3.926843,3.11837 3.926843,8.48891 0,3.29161 -1.385945,6.179 -1.385944,2.88738 -5.312787,6.58323 l -10.798817,10.27909 z" />
+				<path id="path3960" style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:57.74768448px;font-family:'Montserrat SemiBold';-inkscape-font-specification:'Montserrat SemiBold, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffc843;fill-opacity:1;stroke-width:0.26458335" d="m 95.159667,285.35831 -10.97206,-15.36089 -10.856564,15.36089 h -8.546658 l 15.014398,-20.61593 -14.20593,-19.80745 h 8.488909 l 10.336836,14.37917 10.22134,-14.37917 h 8.142422 l -14.148181,19.51872 15.187641,20.90466 z" />
+			</g>
+		</g>
+	</symbol>
+
+</svg>
+
+<style>
+
+  <link rel="stylesheet" type="css" href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap" media="screen" />
+
+  <link rel="stylesheet" type="css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" media="screen" />
+
+   
+  @font-face {
+    font-family: "Facon";
+    src: url("https://github.com/devloop01/core/blob/master/fonts/Facon.ttf");
+}
+
+:root {
+    --red: #ff5246;
+    --green: #43ff32;
+    --yellow: #fff235;
+    --transition-duration: 200ms;
+}
+
+body {
+    position: relative;
+    width: auto;
+    height: auto;
+    margin: auto;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    font-family: "Montserrat";
+    background: #5f5f5f;
+}
+
+
+
+button {
+    border: 0;
+    background: none;
+    outline: 0;
+}
+button.start,
+button.restart {
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    background: #fff;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: letter-spacing var(--transition-duration) ease;
+    animation: box-shadow-animation 1000ms ease infinite;
+    cursor: pointer;
+    z-index: 20;
+}
+
+button.start:hover,
+button.restart:hover {
+    letter-spacing: 6px;
+}
+
+button.pause {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 18px;
+    opacity: 0.45;
+    cursor: pointer;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 12;
+}
+
+button.pause:hover {
+    opacity: 1;
+}
+
+button.pause.hide {
+    opacity: 0;
+}
+
+button.pause::before, button.pause::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 5px;
+    background: #ffffff;
+}
+
+button.pause::before {
+    left: 4px;
+}
+
+button.pause::after {
+    right: 4px;
+}
+
+button.audio-toggle {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 30px;
+    height: 30px;
+    transition: opacity var(--transition-duration) ease;
+    cursor: pointer;
+    z-index: 21;
+}
+
+button.audio-toggle .icon-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+button.audio-toggle .icon-container .icon {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+button.audio-toggle .icon-container .icon svg {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+}
+
+#canvas-container {
+    position: relative;
+    width: auto;
+    height: auto;
+    animation: fade-in 500ms ease both;
+    animation-delay: 1500ms;
+    z-index: 10;
+}
+
+#canvas-container #core-life {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.95rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    transition: opacity var(--transition-duration) ease;
+    pointer-events: none;
+    user-select: none;
+    color: #000;
+}
+
+#canvas-container .score {
+    position: absolute;
+    left: 50%;
+    top: 25px;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: #fff;
+    user-select: none;
+    pointer-events: none;
+    z-index: 20;
+}
+
+#canvas-container #new-highscore-info {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    color: var(--yellow);
+    font-size: 1.25rem;
+    z-index: 12;
+}
+
+#canvas-container #highscore {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    z-index: 12;
+}
+
+#canvas-container .coins-container {
+    position: absolute;
+    right: 0px;
+    top: 25px;
+    transform: translateY(-50%);
+    width: 80px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    pointer-events: none;
+    z-index: 20;
+}
+
+#canvas-container .coins-container .icon {
+    width: 18px;
+    height: 18px;
+}
+
+#canvas-container .coins-container .icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+#canvas-container .coins-container #total-coins {
+    margin-left: 10px;
+    color: var(--yellow);
+    font-size: 0.95rem;
+}
+
+#canvas-container .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, 0.570448) 50%, black 87%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+#game-title {
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    font-family: "Facon", "Montserrat";
+    font-size: 6rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 10px;
+    transform-origin: bottom center;
+    transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
+    z-index: 12;
+    text-shadow: 5px 0 15px rgba(255, 0, 0, 0.65), -5px 0 15px rgba(0, 0, 255, 0.65), 0 0 5px rgba(255, 255, 255, 0.85);
+    animation: game-title-animation 5000ms ease-in-out infinite;
+    pointer-events: none;
+    user-select: none;
+}
+
+#game-title::after, #game-title::before {
+    content: attr(data-all-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#game-title::before {
+    color: #67f3da;
+    animation: glitch2 2.5s infinite;
+}
+
+#game-title::after {
+    color: #f16f6f;
+    animation: glitch3 2.5s infinite;
+}
+
+#game-info {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    line-height: 26px;
+    font-size: 0.95rem;
+    color: #fff;
+    text-align: center;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 12;
+}
+
+.powerup-progress-bar {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 5px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.445);
+    z-index: 12;
+    transition: opacity var(--transition-duration) ease;
+    overflow: hidden;
+}
+
+.powerup-progress-bar .bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 5px;
+    background: var(--red);
+    transition: width 250ms ease;
+}
+
+.powerup-info {
+    position: absolute;
+    left: 50%;
+    bottom: 2%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 10px;
+    color: #fff;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 12;
+    user-select: none;
+}
+
+.powerup-info #powerup-value,
+.powerup-info #powerup-max-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.powerup-info #powerup-value {
+    margin-right: 5px;
+}
+
+.powerup-info #powerup-max-value {
+    margin-left: 5px;
+}
+
+.powerup-info .powerup-duration-container {
+    position: absolute;
+    left: -80px;
+    display: flex;
+    align-items: center;
+    transition: opacity var(--transition-duration) ease;
+}
+
+.powerup-info .powerup-duration-container .icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.powerup-info .powerup-duration-container .icon svg {
+    width: 80%;
+    height: 80%;
+    fill: #fff;
+}
+
+.powerup-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 25px;
+    transition: opacity var(--transition-duration) ease, transform 100ms ease;
+    z-index: 12;
+}
+
+.powerup-container .powerup {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.powerup-container .powerup .powerup-name {
+    position: absolute;
+    top: -55%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: #fff;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 100ms ease;
+}
+
+.powerup-container .powerup img,
+.powerup-container .powerup .icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    opacity: 0.45;
+    transition: opacity var(--transition-duration) ease;
+    box-shadow: 0 0 0 2px #fff;
+    pointer-events: none;
+    user-select: none;
+}
+
+.powerup-container .powerup .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.powerup-container .powerup .icon svg {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+    transition: opacity var(--transition-duration) ease;
+}
+
+.powerup-container .powerup:hover img,
+.powerup-container .powerup:hover .icon {
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.powerup-container .powerup:hover .powerup-name {
+    opacity: 1;
+}
+
+.magazine {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    width: 100px;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 4px;
+    place-items: center;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 12;
+}
+
+.magazine--text {
+    color: #fff;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+}
+
+.magazine button {
+    grid-column: 1/-1;
+    grid-row: 2/3;
+    color: #fff;
+    background: var(--red);
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-left: 8px;
+    transition: opacity var(--transition-duration) ease;
+    cursor: pointer;
+}
+
+.magazine #key-info {
+    grid-column: -1/1;
+    grid-row: 1/2;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.magazine .icon-container {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.magazine .icon-container .icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.magazine .icon-container .icon svg {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+    stroke: #fff;
+}
+
+.magazine .icon-container .icon.refresh svg {
+    width: 70%;
+    height: 70%;
+}
+
+.shop-with-coins {
+    position: absolute;
+    left: 2%;
+    bottom: 5%;
+    transform: translateY(-50%, -50%);
+    display: grid;
+    place-items: center;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 12;
+}
+
+.shop-with-coins .info-text {
+    color: #fff;
+    font-size: 0.8rem;
+    opacity: 0.75;
+    pointer-events: none;
+    user-select: none;
+}
+
+.shop-with-coins .shop-item {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    margin-bottom: 10px;
+}
+
+.shop-with-coins .shop-item .icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.shop-with-coins .shop-item .icon svg {
+    width: 85%;
+    height: 85%;
+    fill: #fff;
+    opacity: 0.45;
+    transition: opacity 150ms ease;
+}
+
+.shop-with-coins .shop-item .item-info {
+    position: absolute;
+    left: 100%;
+    top: 45%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    transition: opacity var(--transition-duration) ease;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.shop-with-coins .shop-item .item-cost {
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    color: var(--yellow);
+    opacity: 0.45;
+    font-size: 0.75rem;
+}
+
+.shop-with-coins .shop-item:not(.disabled):hover .icon svg {
+    opacity: 1;
+}
+
+.shop-with-coins .shop-item:not(.disabled):hover .item-info {
+    opacity: 1;
+}
+
+.shop-with-coins .shop-item:not(.disabled) .icon {
+    cursor: pointer;
+}
+
+.shop-with-coins .shop-item:not(.disabled) .item-cost {
+    opacity: 1;
+}
+
+.shop-with-coins .shop-item.disabled {
+    filter: grayscale(1);
+    pointer-events: none;
+    user-select: none;
+}
+
+.shop-with-coins .shop-item.disabled svg {
+    opacity: 0.25;
+}
+
+.paused-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(3px) grayscale(0.5);
+    transition: opacity var(--transition-duration) ease;
+    z-index: 20;
+}
+
+.paused-container .paused-text {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 8px;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    user-select: none;
+}
+
+.paused-container button.resume {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    color: #000;
+    padding: 14px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    border-radius: 5px;
+    transition: letter-spacing var(--transition-duration) ease;
+    animation: box-shadow-animation 1000ms ease infinite;
+    cursor: pointer;
+    user-select: none;
+}
+
+.paused-container button.resume:hover {
+    letter-spacing: 3px;
+}
+
+.stats-container {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    font-size: 1.2rem;
+    display: grid;
+    grid-gap: 20px;
+    white-space: nowrap;
+    transition: opacity var(--transition-duration) ease;
+    z-index: 15;
+}
+
+.hide {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+}
+
+@keyframes slide-in {
+    0% {
+        letter-spacing: -2rem;
+        transform: translateX(-200%);
+    }
+    80% {
+        letter-spacing: -2rem;
+        transform: translateX(-50%);
+    }
+    100% {
+        letter-spacing: 3rem;
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        transform: translateY(10%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes box-shadow-animation {
+    0% {
+        box-shadow: 0 0 0 -5px rgba(255, 255, 255, 0.55);
+    }
+    100% {
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes game-title-animation {
+    0%,
+    100% {
+        color: rgba(255, 255, 255, 0.65);
+        text-shadow: 5px 0 15px rgba(255, 0, 0, 0.65), -5px 0 15px rgba(0, 0, 255, 0.65), 0 0 5px rgba(255, 255, 255, 0.85);
+    }
+    25% {
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 2px -2px 15px rgba(255, 0, 0, 0.65), -2px 2px 15px rgba(0, 0, 255, 0.65), 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+    50% {
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: -2px 2px 15px rgba(255, 0, 0, 0.65), 2px -2px 15px rgba(0, 0, 255, 0.65), 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+    75% {
+        color: rgba(255, 255, 255, 0.65);
+        text-shadow: -5px 0 15px rgba(255, 0, 0, 0.65), 5px 0 15px rgba(0, 0, 255, 0.65), 0 0 5px rgba(255, 255, 255, 0.85);
+    }
+}
+
+@keyframes glitch1 {
+    0% {
+        transform: none;
+        opacity: 1;
+    }
+    7% {
+        transform: skew(-0.5deg, -0.9deg);
+        opacity: 0.75;
+    }
+    10% {
+        transform: none;
+        opacity: 1;
+    }
+    27% {
+        transform: none;
+        opacity: 1;
+    }
+    30% {
+        transform: skew(0.8deg, -0.1deg);
+        opacity: 0.75;
+    }
+    35% {
+        transform: none;
+        opacity: 1;
+    }
+    52% {
+        transform: none;
+        opacity: 1;
+    }
+    55% {
+        transform: skew(-1deg, 0.2deg);
+        opacity: 0.75;
+    }
+    50% {
+        transform: none;
+        opacity: 1;
+    }
+    72% {
+        transform: none;
+        opacity: 1;
+    }
+    75% {
+        transform: skew(0.4deg, 1deg);
+        opacity: 0.75;
+    }
+    80% {
+        transform: none;
+        opacity: 1;
+    }
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+@keyframes glitch2 {
+    0% {
+        transform: none;
+        opacity: 0.25;
+    }
+    7% {
+        transform: translate(-2px, -3px);
+        opacity: 0.5;
+    }
+    10% {
+        transform: none;
+        opacity: 0.25;
+    }
+    27% {
+        transform: none;
+        opacity: 0.25;
+    }
+    30% {
+        transform: translate(-5px, -2px);
+        opacity: 0.5;
+    }
+    35% {
+        transform: none;
+        opacity: 0.25;
+    }
+    52% {
+        transform: none;
+        opacity: 0.25;
+    }
+    55% {
+        transform: translate(-5px, -1px);
+        opacity: 0.5;
+    }
+    50% {
+        transform: none;
+        opacity: 0.25;
+    }
+    72% {
+        transform: none;
+        opacity: 0.25;
+    }
+    75% {
+        transform: translate(-2px, -6px);
+        opacity: 0.5;
+    }
+    80% {
+        transform: none;
+        opacity: 0.25;
+    }
+    100% {
+        transform: none;
+        opacity: 0.25;
+    }
+}
+
+@keyframes glitch3 {
+    0% {
+        transform: none;
+        opacity: 0.25;
+    }
+    7% {
+        transform: translate(2px, 3px);
+        opacity: 0.5;
+    }
+    10% {
+        transform: none;
+        opacity: 0.25;
+    }
+    27% {
+        transform: none;
+        opacity: 0.25;
+    }
+    30% {
+        transform: translate(5px, 2px);
+        opacity: 0.5;
+    }
+    35% {
+        transform: none;
+        opacity: 0.25;
+    }
+    52% {
+        transform: none;
+        opacity: 0.25;
+    }
+    55% {
+        transform: translate(5px, 1px);
+        opacity: 0.5;
+    }
+    50% {
+        transform: none;
+        opacity: 0.25;
+    }
+    72% {
+        transform: none;
+        opacity: 0.25;
+    }
+    75% {
+        transform: translate(2px, 6px);
+        opacity: 0.5;
+    }
+    80% {
+        transform: none;
+        opacity: 0.25;
+    }
+    100% {
+        transform: none;
+        opacity: 0.25;
+    }
+}
+#background { 
+    background: url(imagenes/index.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+
+
+<script>
+  // ------------------------
+// -------- CLASS ---------
+// ------------------------
+
+class Ball {
+	constructor(x, y, options) {
+		this.type = {
+			core: options.core,
+			attacker: options.attacker,
+			healer: options.healer
+		};
+
+		this.position = createVector(x, y);
+		this.radius = options.radius || 20;
+		this.color = options.color || this.selectColor(this.type);
+		this.velocity = options.velocity || createVector(0, 0);
+		this.acceleration = options.acceleration || createVector(0, 0);
+		this.particlesArray = options.particlesArray;
+		this.endLocation = options.endLocation || null;
+		this.destroyed = false;
+		this.powerUps = {
+			shield: false
+		};
+
+		if (this.type.attacker) {
+			this.totalLife = options.attackerLife || 5;
+			this.strength = options.strength || 5;
+		}
+		if (this.type.healer) {
+			this.totalLife = 10;
+			this.strength = 10;
+		}
+		if (this.type.core) this.totalLife = 100;
+	}
+
+	show() {
+		noStroke();
+		fill(this.color);
+		ellipse(this.position.x, this.position.y, this.radius);
+
+		if (this.type.core) {
+			noFill();
+			stroke(this.color);
+			strokeWeight(2);
+			if (this.powerUps.shield)
+				ellipse(this.position.x, this.position.y, this.radius + 10);
+			if (this.destroyed) {
+				this.radius = 0;
+			}
+		}
+	}
+
+	update() {
+		let v = p5.Vector.sub(this.position, this.endLocation);
+
+		if (!(this.velocity.equals(0, 0) || this.acceleration.equals(0, 0))) {
+			this.position.add(this.velocity);
+			this.velocity.sub(v);
+			this.velocity.setMag(3);
+		}
+
+		if (this.type.core == true && this.destroyed == false) {
+			if (this.totalLife > 100) this.totalLife = 100;
+			this.breakIfLifeCompletes();
+		}
+
+		this.timer++;
+	}
+
+	collisionDetection(CORE, attackersArray) {
+		for (let i = 0; i < attackersArray.length; i++) {
+			let distBetweenPoints =
+				dist(
+					attackersArray[i].position.x,
+					attackersArray[i].position.y,
+					CORE.position.x,
+					CORE.position.y
+				) -
+				this.radius * (this.powerUps.shield ? 2.32 : 2);
+			if (distBetweenPoints < 0) {
+				this.changeLifeValue(CORE);
+				attackersArray[i].radius = 0;
+				attackersArray.splice(i, 1);
+				this.breakIntoParticles(this.particlesArray, this.position, {
+					minRadius: 1,
+					maxRadius: 3,
+					maxVelocity: 8,
+					maxParticles: 15,
+					colorsArray: [this.color, CORE.color]
+				});
+				return true;
+			}
+		}
+	}
+
+	changeLifeValue() {
+		if (core.totalLife > 0) {
+			if (this.type.attacker && core.powerUps.shield == false) {
+				core.totalLife -= this.strength;
+			} else if (this.type.healer) {
+				core.totalLife += this.strength;
+			}
+		}
+	}
+
+	breakIfLifeCompletes() {
+		if (this.totalLife <= 0) {
+			this.breakIntoParticles(this.particlesArray, this.position, {
+				minRadius: 1,
+				maxRadius: 4,
+				maxVelocity: 20,
+				colorsArray: totalCoins != 0 ? [this.color, "#ffff00"] : [this.color],
+				maxParticles: 20,
+				blast: false
+			});
+			this.destroyed = true;
+		}
+	}
+
+	breakIntoParticles(particlesArray, location, options) {
+		for (let i = 0; i < options.maxParticles; i++) {
+			let randomRadius = random(options.minRadius, options.maxRadius);
+			let randColor =
+				options.colorsArray != undefined
+					? options.colorsArray[floor(random(options.colorsArray.length))]
+					: options.color;
+			particlesArray.push(
+				new Particle(location.x, location.y, {
+					color: randColor,
+					radius: randomRadius,
+					maxVelocity: options.maxVelocity,
+					blast: options.blast,
+					gravity: options.gravity,
+					timeToLive: options.timeToLive
+				})
+			);
+		}
+	}
+
+	selectColor(object) {
+		if (object.core == true) return "#fff";
+		else if (object.attacker == true) return "#ff0000";
+		else if (object.healer == true) return "#00ff00";
+	}
+}
+
+// ---------------------- //
+// ---------------------- //
+// ---- Bullet Class ---- //
+// ---------------------- //
+// ---------------------- //
+
+class Bullet extends Ball {
+	constructor(x, y, options) {
+		super(x, y, options);
+		this.strength = options.strength || 5;
+		this.bulletVelocity = 10;
+		this.endLocationVector = options.endLocationVector;
+	}
+
+	show() {
+		push();
+		translate(this.position.x, this.position.y);
+		rotate(this.endLocationVector.heading() - PI / 2);
+		stroke(this.color);
+		strokeWeight(this.radius);
+		line(0, 0, 0, this.radius);
+		pop();
+	}
+
+	update() {
+		this.position.add(this.velocity);
+		this.velocity.add(this.acceleration);
+		this.velocity.limit(this.bulletVelocity);
+	}
+
+	collisionDetection(bulletsArray, attackersArray) {
+		for (let i = 0; i < attackersArray.length; i++) {
+			for (let j = 0; j < bulletsArray.length; j++) {
+				let destroyed = false;
+				let attackPower = attackersArray[i].strength;
+				let distBetweenPoints =
+					dist(
+						attackersArray[i].position.x,
+						attackersArray[i].position.y,
+						bulletsArray[j].position.x,
+						bulletsArray[j].position.y
+					) -
+					attackersArray[i].radius * 0.85;
+
+				if (distBetweenPoints < 0) {
+					this.changeLifeValue(attackersArray[i]);
+					bulletsArray[j].radius = 0;
+					bulletsArray.splice(j, 1);
+					super.breakIntoParticles(this.particlesArray, this.position, {
+						minRadius: 1,
+						maxRadius: 2,
+						maxVelocity: 5,
+						maxParticles: 10,
+						blast: false,
+						timeToLive: 180,
+						colorsArray: [this.color, attackersArray[i].color],
+						gravity: p5.Vector.sub(attackersArray[i].position, core.position).setMag(
+							0.65
+						)
+					});
+
+					if (attackersArray[i].destroyed == false) {
+						attackersArray[i].strength -= this.strength;
+						if (attackersArray[i].strength == 0) attackersArray[i].destroyed = true;
+					}
+
+					if (attackersArray[i].destroyed == true) {
+						destroyed = true;
+						super.breakIntoParticles(
+							this.particlesArray,
+							attackersArray[i].position,
+							{
+								minRadius: 1,
+								maxRadius: 3,
+								maxVelocity: 8,
+								maxParticles: 15,
+								blast: true,
+								timeToLive: 100,
+								colorsArray: [attackersArray[i].color],
+								gravity: createVector(0, 0)
+							}
+						);
+
+						if (attackersArray[i].type.attacker) {
+							let randomTotalCoins = floor(random(4, 8));
+							for (let j = 0; j < randomTotalCoins; j++) {
+								coinsArray.push(
+									new Coin(attackersArray[i].position.x, attackersArray[i].position.y, {
+										coinValue: isDoubleCoin
+											? 2 * floor(random(2, 6))
+											: floor(random(1, 3)),
+										velocity: p5.Vector.random2D().setMag(attackersArray[i].radius / 2),
+										acceleration: p5.Vector.random2D(),
+										endLocation: core.position,
+										color: "#ffff00",
+										radius: random(2, 5)
+									})
+								);
+							}
+						}
+
+						attackersArray.splice(i, 1);
+					}
+					return {
+						destroyed: destroyed,
+						attackPower: attackPower
+					};
+				}
+			}
+		}
+		return false;
+	}
+
+	changeLifeValue(attacker) {
+		if (attacker.totalLife > 0) {
+			attacker.totalLife -= this.strength;
+		}
+		if (attacker.totalLife <= 0) {
+			attacker.destroyed = true;
+		}
+	}
+
+	removeIfOutOfBounds(array, index) {
+		if (
+			this.position.x + this.radius > width ||
+			this.position.x - this.radius < 0 ||
+			this.position.y + this.radius > height ||
+			this.position.y - this.radius < 0
+		) {
+			array.splice(index, 1);
+		}
+	}
+}
+
+// ---------------------- //
+// ---------------------- //
+// ---- Coins Class ---- //
+// ---------------------- //
+// ---------------------- //
+
+class Coin extends Ball {
+	constructor(x, y, options) {
+		super(x, y, options);
+		this.coinValue = options.coinValue || 1;
+	}
+
+	changeTotalCoinsValue() {
+		totalCoins += this.coinValue;
+	}
+
+	collisionDetection() {
+		for (let i = 0; i < coinsArray.length; i++) {
+			let distBetweenPoints =
+				dist(
+					coinsArray[i].position.x,
+					coinsArray[i].position.y,
+					core.position.x,
+					core.position.y
+				) - this.radius;
+			if (distBetweenPoints < 0) {
+				coinsArray[i].radius = 0;
+				this.changeTotalCoinsValue();
+				coinsArray.splice(i, 1);
+			}
+		}
+	}
+}
+
+class Canon {
+	constructor(x, y, options) {
+		this.position = createVector(x, y);
+		this.radius = options.radius;
+		this.color = options.color;
+		this.particlesArray = options.particlesArray;
+		this.scaleY = 1;
+		this.state = {
+			shooting: true,
+			reloading: false
+		};
+		this.powerUps = {
+			machineGun: false,
+			doubleCanon: false
+		};
+		this.canonWidth = 10;
+		this.canonHeight = this.radius;
+		this.angleToLook = createVector(0, 0);
+	}
+
+	show() {
+		push();
+
+		translate(this.position.x, this.position.y);
+		rotate(this.angleToLook);
+		scale(1, this.scaleY);
+
+		noStroke();
+
+		fill(this.color);
+		rect(
+			-this.canonWidth / 2,
+			this.radius / 8,
+			this.canonWidth,
+			this.canonHeight
+		);
+		if (this.state.shooting) fill("#67f3da");
+		if (this.state.reloading) fill("#ff0000");
+		rect(
+			-this.canonWidth / 2,
+			this.radius,
+			this.canonWidth,
+			this.canonHeight / 8
+		);
+
+		if (this.powerUps.doubleCanon) {
+			fill(this.color);
+			rect(
+				-this.canonWidth / 2,
+				-this.radius / 8,
+				this.canonWidth,
+				-this.canonHeight
+			);
+			if (this.state.shooting) fill("#da46ff");
+			if (this.state.reloading) fill("#ff0000");
+			rect(
+				-this.canonWidth / 2,
+				-this.radius,
+				this.canonWidth,
+				-this.canonHeight / 8
+			);
+		}
+
+		pop();
+	}
+
+	lookAt(x, y) {
+		let location, vector, angle;
+		location = createVector(x, y);
+		vector = p5.Vector.sub(location, this.position);
+		vector.setMag(this.radius);
+		angle = vector.heading() - PI / 2;
+		this.angleToLook = angle;
+	}
+
+	shoot(startPos, endPos, bulletsArray, options) {
+		let v1 = p5.Vector.sub(endPos, this.position);
+		let a1 = v1.heading() - PI / 2;
+		bulletsArray.push(
+			new Bullet(
+				startPos.x + sin(-a1) * this.canonHeight,
+				startPos.y + cos(a1) * this.canonHeight,
+				{
+					acceleration: v1,
+					color: options.color,
+					radius: options.radius,
+					particlesArray: this.particlesArray,
+					strength: this.powerUps.doubleCanon ? 100 : options.bulletStrength,
+					endLocationVector: v1
+				}
+			)
+		);
+		if (this.powerUps.doubleCanon) {
+			let v2 = p5.Vector.sub(this.position, endPos);
+			let a2 = v2.heading() - PI / 2;
+			bulletsArray.push(
+				new Bullet(
+					startPos.x + sin(-a2) * this.canonHeight,
+					startPos.y + cos(a2) * this.canonHeight,
+					{
+						acceleration: v2,
+						color: "#da46ff",
+						radius: options.radius,
+						particlesArray: this.particlesArray,
+						strength: 100,
+						endLocationVector: v2
+					}
+				)
+			);
+		}
+		this.showRecoil();
+	}
+
+	showRecoil() {
+		let tl = gsap.timeline();
+		let duration = 0.05;
+		tl.to(this, duration, { scaleY: 1.05 });
+		tl.to(this, duration, { scaleY: 1 });
+	}
+}
+
+class Particle {
+	constructor(x, y, options) {
+		this.position = createVector(x, y);
+		this.velocity = createVector(
+			random(-options.maxVelocity, options.maxVelocity),
+			random(-options.maxVelocity, options.maxVelocity)
+		);
+
+		this.blast = options.blast || false;
+
+		this.normalisedVelocity = p5.Vector.random2D().setMag(options.maxVelocity);
+		this.anotherPosition = this.position.copy();
+
+		this.radius = options.radius;
+		this.color = options.color;
+		this.timeToLive = options.timeToLive || 255;
+
+		this.gravity = options.gravity || createVector(0, 0.25);
+	}
+
+	show() {
+		noStroke();
+		let c = color(this.color);
+		c.setAlpha(this.timeToLive);
+		fill(c);
+
+		if (this.blast) {
+			ellipse(this.anotherPosition.x, this.anotherPosition.y, this.radius);
+		}
+		ellipse(this.position.x, this.position.y, this.radius);
+	}
+
+	update() {
+		this.position.add(this.velocity);
+		this.velocity.add(this.gravity);
+
+		this.anotherPosition.add(this.normalisedVelocity);
+
+		this.timeToLive -= 1;
+	}
+
+	removeAfterLifeCompletes(array, index) {
+		if (this.timeToLive == 0) {
+			array.splice(index, 1);
+		}
+	}
+}
+
+// -----------------------
+// -- CLASSES COMPLETES --
+// ----- CODE STARTS -----
+// -----------------------
+
+console.clear();
+
+// Object variables
+let core, canon;
+
+// array variables
+let attackers, healers, particles, bullets, coinsArray;
+
+// Boolean variables
+let destroyedEveryone,
+	gameStarted,
+	gamePaused,
+	isReloading,
+	isPowerUpActive,
+	checkDurationChanged,
+	changedAttackerProps,
+	isDoubleCoin;
+
+// counter variables
+let timer, spawnTimeRate, reloadTimer, machineGunShootTimer;
+
+// number storing variables
+let score,
+	highScore,
+	totalCoins,
+	magazineSize,
+	bulletsShot,
+	reloadTime,
+	reloadTimeFactor,
+	attackerTotalLife,
+	attackerStrength,
+	bulletStrength,
+	powerUpDuration,
+	powerUpValue,
+	powerUpMaxValue,
+	powerUpIncrement,
+	machineGunShootDelay,
+	totalHealers,
+	checkDuration,
+	changeAttackerPropsAtScore;
+
+// cost Variables
+let magazineIncreaseCost,
+	healingCost,
+	powerUpDurationIncreaseCost,
+	decreaseReloadingTimeCost;
+
+// change amount variables
+let healingAmount,
+	magazineIncreaseAmount,
+	powerUpDurationIncreaseAmount,
+	decreaseReloadingTimeFactorBy;
+
+// STATS variables
+let totalAttackersKilled, totalTimeSurvived;
+let gameStartTime, gameEndTime;
+
+// canvas props
+const canvasWidth = 600,
+	canvasHeight = 600;
+
+const gameTitle = document.getElementById("game-title");
+const gameInfo = document.getElementById("game-info");
+
+const magazineContainer = document.querySelector(".magazine");
+const bulletIcons = magazineContainer.querySelectorAll("svg.bullet");
+const pausedContainerEl = document.querySelector(".paused-container");
+const statsContainerEl = document.querySelector(".stats-container");
+
+// All the buttons
+const startButton = document.querySelector("button.start");
+const restartButton = document.querySelector("button.restart");
+const reloadButton = magazineContainer.querySelector("button");
+const pauseButton = document.querySelector("button.pause");
+const resumeButton = document.querySelector("button.resume");
+const audioToggleButton = document.querySelector(".audio-toggle");
+
+const coreLifeEl = document.getElementById("core-life");
+const scoreEl = document.querySelector(".score");
+const highScoreEl = document.getElementById("highscore");
+const coinsContainerEl = document.querySelector(".coins-container");
+
+// Powerup related elements
+const powerupProgressbarContainer = document.querySelector(
+	".powerup-progress-bar"
+);
+const powerupProgressInfoEl = document.querySelector(".powerup-info");
+const powerUpDurationContainerEl = powerupProgressInfoEl.querySelector(
+	".powerup-duration-container"
+);
+const powerUpDurationEl = document.getElementById("powerup-duration-value");
+const powerupValueEl = powerupProgressInfoEl.querySelector("#powerup-value");
+const powerupMaxValueEl = powerupProgressInfoEl.querySelector(
+	"#powerup-max-value"
+);
+const powerupContainer = document.querySelector(".powerup-container");
+const progressEl = document.querySelector(".powerup-progress-bar .bar");
+
+// powerup items Elements
+const machinegunPowerUpEl = document.getElementById("machinegun-powerup");
+const doubleCanonPowerUpEl = document.getElementById("doublecanon-powerup");
+const shieldPowerUpEl = document.getElementById("shield-powerup");
+const doubleCoinPowerUpEl = document.getElementById("double-coins-powerup");
+
+// shop items Elements
+const shopCointainer = document.querySelector(".shop-with-coins");
+const healthKitShopItemEl = document.getElementById("health-kit");
+const improveMagazineShopItemEl = document.getElementById("increase-magazine");
+const fasterReloadShopItemEl = document.getElementById("faster-reload");
+const increasePowerUpDurationShopItemEl = document.getElementById(
+	"increase-powerup-duration"
+);
+
+function setup() {
+	let canvas = createCanvas(canvasWidth, canvasHeight);
+	canvas.parent("#canvas-container");
+}
+
+// initialize function
+function init() {
+	attackers = [];
+	healers = [];
+	particles = [];
+	bullets = [];
+	coinsArray = [];
+
+	destroyedEveryone = false;
+	gameStarted = false;
+	gamePaused = false;
+	isReloading = false;
+	isPowerUpActive = false;
+	checkDurationChanged = false;
+	changedAttackerProps = false;
+	isDoubleCoin = false;
+
+	score = 0;
+	highScore = localStorage.getItem("highScore");
+	totalCoins = 0;
+	totalHealers = 3;
+	timer = 0;
+	spawnTimeRate = 100;
+	magazineSize = 10;
+	bulletsShot = 0;
+	reloadTimer = 0;
+	reloadTimeFactor = 10;
+	reloadTime = magazineSize * reloadTimeFactor;
+	attackerTotalLife = 5;
+	attackerStrength = 5;
+	bulletStrength = 5;
+	powerUpValue = 0;
+	powerUpMaxValue = 200;
+	powerUpIncrement = 10;
+	powerUpDuration = 10000;
+	machineGunShootDelay = 8;
+	machineGunShootTimer = 0;
+	checkDuration = 350;
+	changeAttackerPropsAtScore = 75;
+
+	// shop items cost
+	magazineIncreaseCost = 150;
+	healingCost = 300;
+	powerUpDurationIncreaseCost = 250;
+	decreaseReloadingTimeCost = 150;
+
+	// Amount
+	healingAmount = 50;
+	magazineIncreaseAmount = 5;
+	powerUpDurationIncreaseAmount = 5000;
+	decreaseReloadingTimeFactorBy = 2;
+
+	totalAttackersKilled = 0;
+	totalTimeSurvived = 0;
+	gameStartTime = Date.now();
+	gameEndTime = null;
+
+	core = new Ball(width / 2, height / 2, {
+		core: true,
+		radius: 60,
+		particlesArray: particles
+	});
+
+	canon = new Canon(core.position.x, core.position.y, {
+		radius: 40,
+		color: core.color,
+		particlesArray: particles
+	});
+
+	updateProgressInfo();
+	showUI();
+}
+
+startButton.addEventListener("click", () => {
+	init();
+	gameStarted = true;
+	gameTitle.classList.add("hide");
+	gameInfo.classList.add("hide");
+});
+
+restartButton.addEventListener("click", () => {
+	init();
+	gameStarted = true;
+	statsContainerEl.classList.add("hide");
+	highScoreEl.classList.add("hide");
+	document.getElementById("new-highscore-info").classList.add("hide");
+});
+
+pauseButton.addEventListener("mousedown", pauseGame);
+resumeButton.addEventListener("mousedown", resumeGame);
+reloadButton.addEventListener("mousedown", startReloadingCanon);
+
+function mousePressed() {
+	if (gameStarted && core.destroyed == false && !gamePaused) {
+		let endPos = createVector(mouseX, mouseY);
+
+		if (canon.state.shooting == true) {
+			canon.shoot(core.position, endPos, bullets, {
+				color: "#00ffff",
+				radius: 5,
+				bulletStrength: bulletStrength
+			});
+			if (!canon.powerUps.doubleCanon || !canon.powerUps.machineGun) bulletsShot++;
+		}
+
+		if (bulletsShot == magazineSize) startReloadingCanon();
+	}
+}
+
+let pausedIconIndex = 0;
+let iconIndex = 0;
+function startReloadingCanon() {
+	isReloading = true;
+	canon.state.reloading = true;
+	canon.state.shooting = false;
+	if (!gamePaused) bulletsShot = 0;
+	animateValue(
+		magazineContainer.querySelector(".magazine--text").querySelector("#bullets"),
+		0,
+		magazineSize,
+		reloadTimeFactor * 480
+	);
+}
+
+function keyPressed(key) {
+	if (key.key.toLowerCase() == "r" && bulletsShot != 0 && !gamePaused)
+		startReloadingCanon();
+}
+
+function pauseGame() {
+	gamePaused = true;
+	pausedContainerEl.classList.remove("hide");
+	if (gamePaused) {
+		iconIndex = pausedIconIndex;
+		pauseButton.classList.add("hide");
+	} else if (gamePaused == false) {
+		pauseButton.classList.remove("hide");
+		if (canon.state.reloading) {
+			animateValue(
+				magazineContainer
+					.querySelector(".magazine--text")
+					.querySelector("#bullets"),
+				magazineSize - bulletsShot,
+				magazineSize,
+				(magazineSize - bulletsShot) * 300
+			);
+		}
+	}
+}
+
+function resumeGame() {
+	setTimeout(() => {
+		gamePaused = false;
+	}, 100);
+	pauseButton.classList.remove("hide");
+	pausedContainerEl.classList.add("hide");
+}
+
+// draw loop
+function draw() {
+	background(0);
+	if (gameStarted) {
+		updateCoreLife(coreLifeEl, core.totalLife);
+		updateScore(scoreEl, score);
+		updateCoins(coinsContainerEl.querySelector("#total-coins"), totalCoins);
+		if (!isReloading) updateMagazine();
+		updateProgressBar(progressEl, powerUpValue, powerUpMaxValue);
+		showAllShopItems();
+		showAllItemsCost();
+		totalCoins = max(0, totalCoins);
+		if (!isPowerUpActive)
+			powerUpDurationEl.innerHTML = `${powerUpDuration / 1000}s`;
+
+		bullets.forEach((bullet, index) => {
+			bullet.show();
+			if (!gamePaused) bullet.update();
+			let c1 = bullet.collisionDetection(bullets, attackers);
+			let c2 = bullet.collisionDetection(bullets, healers);
+			bullet.removeIfOutOfBounds(bullets, index);
+			if (c1.destroyed) {
+				score += attackerStrength;
+				totalAttackersKilled++;
+				if (!isPowerUpActive) powerUpValue += attackerStrength;
+				powerUpValue =
+					powerUpValue >= powerUpMaxValue ? powerUpMaxValue : powerUpValue;
+			}
+			if (c2.destroyed) score -= c2.attackPower;
+
+			if (c1.destroyed || c2.destroyed) {
+				if (!isPowerUpActive) updateProgressInfo();
+				checkDurationChanged = false;
+			}
+			score = max(0, score);
+		});
+
+		particles.forEach((particle, index) => {
+			particle.show();
+			if (!gamePaused) particle.update();
+			particle.removeAfterLifeCompletes(particles, index);
+		});
+
+		coinsArray.forEach((coin) => {
+			coin.show();
+			if (!gamePaused) coin.update();
+			coin.collisionDetection();
+		});
+
+		attackers.forEach((attacker) => {
+			attacker.show();
+			if (!gamePaused) attacker.update();
+			attacker.collisionDetection(core, attackers);
+		});
+
+		healers.forEach((healer) => {
+			healer.show();
+			if (!gamePaused) healer.update();
+			healer.collisionDetection(core, healers);
+		});
+
+		if (!gamePaused) canon.lookAt(mouseX, mouseY);
+		canon.show();
+
+		core.show();
+		if (!gamePaused) core.update();
+
+		if (!isReloading) iconIndex = 0;
+
+		if (canon.state.shooting == false && !gamePaused) {
+			reloadButton.style.background = "#555";
+			reloadButton.innerHTML = "reloading..";
+			magazineContainer.querySelector("#key-info").classList.add("hide");
+			bulletIcons[iconIndex].style.opacity = "1";
+			if (
+				iconIndex != bulletIcons.length - 1 &&
+				reloadTimer != 0 &&
+				reloadTimer % floor(reloadTime / 3) == 0
+			)
+				iconIndex++;
+
+			if (reloadTimer != 0 && reloadTimer % reloadTime == 0) {
+				canon.state.reloading = false;
+				canon.state.shooting = true;
+				bulletsShot = 0;
+				reloadTimer = 0;
+				isReloading = false;
+				reloadButton.classList.add("hide");
+			}
+			reloadTimer++;
+		} else if (canon.state.shooting && !gamePaused) {
+			if (canon.powerUps.machineGun) {
+				canon.state.shooting = true;
+				if (
+					machineGunShootTimer != 0 &&
+					machineGunShootTimer % machineGunShootDelay == 0
+				) {
+					let endPos = createVector(mouseX, mouseY);
+					canon.shoot(core.position, endPos, bullets, {
+						color: "#67f3da",
+						radius: 5,
+						bulletStrength: bulletStrength
+					});
+				}
+				machineGunShootTimer++;
+			}
+		}
+
+		if (score != 0 && score % changeAttackerPropsAtScore == 0) {
+			changedAttackerProps = true;
+			if (changedAttackerProps) {
+				attackerTotalLife += attackerTotalLife == 50 ? 0 : 5;
+				attackerStrength += attackerStrength == 50 ? 0 : 5;
+				changeAttackerPropsAtScore += 200;
+				changedAttackerProps = false;
+			}
+		}
+
+		if (timer != 0 && timer % checkDuration == 0 && !gamePaused) {
+			if (attackers.length == 0) {
+				pushIntoArray("attacker", attackers);
+			}
+		}
+
+		if (timer != 0 && timer % checkDuration == 0 && !gamePaused) {
+			if (checkDuration >= 25) {
+				if (score >= 100 && score % 100 == 0 && checkDurationChanged == false) {
+					checkDuration -= 25;
+					spawnTimeRate -= spawnTimeRate >= 30 ? 10 : 0;
+					checkDurationChanged = true;
+				}
+			}
+		}
+
+		if (core.destroyed && destroyedEveryone == false) {
+			destroyEveryone();
+			destroyedEveryone = true;
+			gameEndTime = Date.now();
+			showStats();
+			restartButton.classList.remove("hide");
+			statsContainerEl.classList.remove("hide");
+		}
+
+		if (timer != 0 && timer % spawnTimeRate == 0) {
+			let randomRatio = random(1);
+			if (randomRatio < 0.4) {
+				if (core.totalLife < 30 && totalHealers != 0) {
+					pushIntoArray("healer", healers);
+					totalHealers--;
+				}
+			} else {
+				pushIntoArray("attacker", attackers);
+			}
+		}
+
+		if (!gamePaused) timer++;
+	}
+}
+
+// push into array based on given type
+function pushIntoArray(typeName, array) {
+	if (core.destroyed == false) {
+		let randomAngle = random(TWO_PI);
+		let randomX = core.position.x + sin(randomAngle) * width;
+		let randomY = core.position.y + cos(randomAngle) * height;
+		array.push(
+			new Ball(randomX, randomY, {
+				attacker: typeName == "attacker",
+				healer: typeName == "healer",
+				velocity: p5.Vector.random2D(),
+				acceleration: p5.Vector.random2D(),
+				endLocation: core.position,
+				particlesArray: particles,
+				attackerLife: attackerTotalLife,
+				strength: attackerStrength
+			})
+		);
+	}
+}
+
+// updates score el
+function updateScore(el, score) {
+	el.innerHTML = `score : ${score}`;
+}
+
+// updates Coins el
+function updateCoins(el, tCoins) {
+	el.innerHTML = `${tCoins}`;
+}
+
+// updates core life el
+function updateCoreLife(el, life) {
+	el.innerHTML = `${life}`;
+}
+
+// updates progress info
+function updateProgressInfo() {
+	powerupValueEl.innerHTML = `${powerUpValue}`;
+	powerupMaxValueEl.innerHTML = `${powerUpMaxValue}`;
+}
+
+// updates magazinesize text and icons
+function updateMagazine() {
+	magazineContainer
+		.querySelector(".magazine--text")
+		.querySelector("#bullets").innerHTML = `${magazineSize - bulletsShot}`;
+	magazineContainer
+		.querySelector(".magazine--text")
+		.querySelector("#magazine-size").innerHTML = `${magazineSize}`;
+
+	let totalBulletIcons = 3;
+	let magazineRatio = floor(magazineSize / totalBulletIcons);
+	let iconBreakpointList = returnBreakpointArray(
+		magazineRatio,
+		totalBulletIcons
+	);
+	let bulletsLeft = magazineSize - bulletsShot;
+
+	if (bulletsLeft == iconBreakpointList[2])
+		changeOpacity([bulletIcons[2]], "0.45");
+	else if (bulletsLeft <= iconBreakpointList[1]) {
+		reloadButton.style.background = "var(--red)";
+		reloadButton.innerHTML = "reload";
+		reloadButton.classList.remove("hide");
+		magazineContainer.querySelector("#key-info").classList.remove("hide");
+		changeOpacity([bulletIcons[1], bulletIcons[2]], "0.45");
+	} else if (bulletsLeft == iconBreakpointList[0])
+		changeOpacity([...bulletIcons], "0.45");
+
+	function returnBreakpointArray(baseVal, n) {
+		let list = [];
+		let a = 0;
+		for (let i = 0; i < n; i++) {
+			list.push(a);
+			a += baseVal;
+		}
+		return list;
+	}
+
+	function changeOpacity(els, opacityValue) {
+		for (let i = 0; i < els.length; i++) {
+			let el = els[i];
+			el.style.opacity = opacityValue;
+		}
+	}
+}
+
+// shows the UI
+function showUI() {
+	startButton.classList.add("hide");
+	restartButton.classList.add("hide");
+	setTimeout(() => {
+		coreLifeEl.classList.remove("hide");
+		scoreEl.classList.remove("hide");
+		coinsContainerEl.classList.remove("hide");
+		powerupProgressbarContainer.classList.remove("hide");
+		powerupProgressInfoEl.classList.remove("hide");
+		magazineContainer.classList.remove("hide");
+		shopCointainer.classList.remove("hide");
+		pauseButton.classList.remove("hide");
+		powerUpDurationContainerEl.classList.remove("hide");
+	}, 100);
+	magazineContainer.querySelector("#key-info").classList.add("hide");
+	reloadButton.classList.add("hide");
+	bulletIcons.forEach((icon) => {
+		icon.style.opacity = "1";
+	});
+}
+
+// hides the UI
+function hideUI() {
+	powerupContainer.classList.add("hide");
+	powerupProgressbarContainer.classList.add("hide");
+	powerupProgressInfoEl.classList.add("hide");
+	magazineContainer.classList.add("hide");
+	coreLifeEl.classList.add("hide");
+	scoreEl.classList.add("hide");
+	coinsContainerEl.classList.add("hide");
+	shopCointainer.classList.add("hide");
+	pauseButton.classList.add("hide");
+}
+
+// handles all the powerups
+function handlePowerUps() {
+	machinegunPowerUpEl.addEventListener("mousedown", activateMachineGun);
+	doubleCanonPowerUpEl.addEventListener("mousedown", activateDoubleCanon);
+	shieldPowerUpEl.addEventListener("mousedown", activateShield);
+	doubleCoinPowerUpEl.addEventListener("mousedown", doubleCoinValue);
+
+	function activateDoubleCanon() {
+		canon.powerUps.doubleCanon = true;
+		activatePowerup();
+	}
+	function activateMachineGun() {
+		canon.powerUps.machineGun = true;
+		activatePowerup();
+	}
+	function activateShield() {
+		core.powerUps.shield = true;
+		activatePowerup();
+	}
+	function doubleCoinValue() {
+		isDoubleCoin = true;
+		activatePowerup();
+	}
+
+	function deactivatePowerup() {
+		isPowerUpActive = false;
+		canon.powerUps.doubleCanon = false;
+		canon.powerUps.machineGun = false;
+		core.powerUps.shield = false;
+		isDoubleCoin = false;
+	}
+
+	function activatePowerup() {
+		isPowerUpActive = true;
+		powerupContainer.classList.add("hide");
+		powerupProgressbarContainer.classList.remove("hide");
+		powerupProgressInfoEl.classList.remove("hide");
+		countDownPowerUpProgress();
+		setTimeout(deactivatePowerup, powerUpDuration);
+	}
+}
+handlePowerUps();
+
+// handles all the items that can be bought
+function handleShopItems() {
+	healthKitShopItemEl.addEventListener("mousedown", healCore);
+	improveMagazineShopItemEl.addEventListener("mousedown", upgradeMagazine);
+	fasterReloadShopItemEl.addEventListener("mousedown", decreaseReloadingTime);
+	increasePowerUpDurationShopItemEl.addEventListener(
+		"mousedown",
+		increasePowerUpDuration
+	);
+
+	function healCore() {
+		core.totalLife += healingAmount;
+		totalCoins -= healingCost;
+	}
+
+	function upgradeMagazine() {
+		magazineSize += magazineIncreaseAmount;
+		totalCoins -= magazineIncreaseCost;
+		magazineIncreaseCost += 150;
+	}
+
+	function decreaseReloadingTime() {
+		reloadTimeFactor -= decreaseReloadingTimeFactorBy;
+		totalCoins -= decreaseReloadingTimeCost;
+		decreaseReloadingTimeCost += 150;
+	}
+
+	function increasePowerUpDuration() {
+		powerUpDuration += powerUpDurationIncreaseAmount;
+		totalCoins -= powerUpDurationIncreaseCost;
+		powerUpDurationIncreaseCost += 150;
+	}
+}
+handleShopItems();
+
+// shows cost of am item
+function showCost(el, cost) {
+	el.querySelector(".item-cost").innerHTML = `${cost}`;
+}
+
+// shows shop item when have enough coins. Extra condition can also be provided
+function showShopItemWhenAvailable(
+	itemEl,
+	cost,
+	availableCoins,
+	condition = true
+) {
+	if (availableCoins >= cost && condition) itemEl.classList.remove("disabled");
+	else itemEl.classList.add("disabled");
+}
+
+// shows all the items cost
+function showAllItemsCost() {
+	showCost(healthKitShopItemEl, healingCost);
+	showCost(improveMagazineShopItemEl, magazineIncreaseCost);
+	showCost(fasterReloadShopItemEl, decreaseReloadingTimeCost);
+	showCost(increasePowerUpDurationShopItemEl, powerUpDurationIncreaseCost);
+}
+
+// shows all the shop items when available
+function showAllShopItems() {
+	showShopItemWhenAvailable(
+		healthKitShopItemEl,
+		healingCost,
+		totalCoins,
+		core.totalLife <= 50
+	);
+	showShopItemWhenAvailable(
+		improveMagazineShopItemEl,
+		magazineIncreaseCost,
+		totalCoins
+	);
+	showShopItemWhenAvailable(
+		fasterReloadShopItemEl,
+		decreaseReloadingTimeCost,
+		totalCoins
+	);
+	showShopItemWhenAvailable(
+		increasePowerUpDurationShopItemEl,
+		powerUpDurationIncreaseCost,
+		totalCoins
+	);
+}
+
+// shows stats when game over
+function showStats() {
+	const totalScoreStatEl = document.getElementById("total-score-stat");
+	const timeSurvidedStatEl = document.getElementById("time-survived-stat");
+	const attackersKilledStatEl = document.getElementById("attackers-killed-stat");
+
+	totalTimeSurvived = floor((gameEndTime - gameStartTime) / 1000);
+
+	totalScoreStatEl.innerHTML = 0;
+	attackersKilledStatEl.innerHTML = 0;
+	timeSurvidedStatEl.innerHTML =
+		totalTimeSurvived < 60
+			? `${totalTimeSurvived} secs`
+			: `${floor(totalTimeSurvived / 60)} mins ${totalTimeSurvived % 60} secs`;
+	setTimeout(() => {
+		animateValue(totalScoreStatEl, 0, returnTotalScore(), 200);
+		animateValue(attackersKilledStatEl, 0, totalAttackersKilled, 200);
+	}, 600);
+
+	if ((score > highScore || highScore == null) && score != 0) {
+		document.getElementById("new-highscore-info").classList.remove("hide");
+		localStorage.setItem("highScore", `${returnTotalScore()}`);
+	} else if (score < highScore) {
+		highScoreEl.classList.remove("hide");
+		highScoreEl.innerHTML = `highscore : ${highScore}`;
+		// document.getElementById("new-highscore-info").classList.add("hide");
+	}
+
+	function returnTotalScore() {
+		return ceil(score + totalAttackersKilled + score * (totalTimeSurvived / 100));
+	}
+}
+
+// updates the progress bar
+function updateProgressBar(el, currentValue, finalValue) {
+	let progressPercentage = currentValue / finalValue;
+	let parentWidth = el.parentElement.offsetWidth;
+	if (progressPercentage <= 1) {
+		let progressWidth = progressPercentage * parentWidth;
+		el.style.width = `${progressWidth}px`;
+		if (progressPercentage < 0.35) el.style.background = "var(--red)";
+		else if (progressPercentage > 0.35 && progressPercentage < 0.75)
+			el.style.background = "var(--yellow)";
+		else el.style.background = "var(--green)";
+	}
+	if (progressPercentage == 1) {
+		if (!isPowerUpActive && !core.destroyed) {
+			progressPercentage = 0;
+			powerupContainer.classList.remove("hide");
+			powerupProgressbarContainer.classList.add("hide");
+			powerupProgressInfoEl.classList.add("hide");
+		}
+	}
+}
+
+// updates the progress bar when counting down after powerup is active
+function countDownPowerUpProgress() {
+	const s = 1000;
+	let x = 1000;
+	powerUpValue = powerUpMaxValue;
+	let t = setInterval(() => {
+		powerUpDurationEl.innerHTML = `${(powerUpDuration - x) / 1000}s`;
+		powerUpValue -= floor((powerUpMaxValue / powerUpDuration) * 1000);
+		powerUpValue = powerUpValue < 0 ? 0 : powerUpValue;
+		updateProgressInfo();
+		if (powerUpValue <= 0) {
+			powerUpValue = 0;
+			totalHealers = 3;
+			clearInterval(t);
+		}
+		x += s;
+	}, s);
+}
+
+// If core is destroyed. Destroy everyone
+function destroyEveryone() {
+	let options = {
+		minRadius: 1,
+		maxRadius: 2,
+		maxVelocity: 10,
+		maxParticles: 50,
+		blast: true
+	};
+	attackers.forEach((attacker) => {
+		let option = {
+			...options,
+			color: attacker.color
+		};
+		attacker.breakIntoParticles(particles, attacker.position, option);
+	});
+	healers.forEach((healer) => {
+		let option = {
+			...options,
+			color: healer.color
+		};
+		healer.breakIntoParticles(particles, healer.position, option);
+	});
+
+	healers = [];
+	attackers = [];
+	coinsArray = [];
+
+	canon.radius = 0;
+	canon.canonWidth = 0;
+
+	let t = setTimeout(() => {
+		if (core.destroyed == true) {
+			gameStarted = false;
+			clearTimeout(t);
+		}
+	}, 3000);
+
+	hideUI();
+}
+
+// counter animates text value in DOM from start to end for given duration
+function animateValue(el, start, end, duration) {
+	// source : https://stackoverflow.com/questions/16994662/count-animation-from-number-a-to-b
+	let range = end - start;
+	let minTimer = 50;
+	let stepTime = Math.abs(Math.floor(duration / range));
+	stepTime = Math.max(stepTime, minTimer);
+	let startTime = new Date().getTime();
+	let endTime = startTime + duration;
+	let timer;
+	function run() {
+		let now = new Date().getTime();
+		let remaining = Math.max((endTime - now) / duration, 0);
+		let value = Math.round(end - remaining * range);
+		el.innerHTML = value;
+		if (gamePaused) {
+			bulletsShot = magazineSize - value;
+			clearInterval(timer);
+		}
+		if (value == end) {
+			clearInterval(timer);
+		}
+	}
+	timer = setInterval(run, stepTime);
+	run();
+}
+
+function setTextAsAttribute(el) {
+	const allText = el.innerHTML.replace(/<(.|\n)*?>/g, "");
+	el.setAttribute("data-all-text", allText);
+}
+setTextAsAttribute(gameTitle);
+
+</script>
+
+
